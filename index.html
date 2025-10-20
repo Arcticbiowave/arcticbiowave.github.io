@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Arctic Biowave Systems – Simple Wave Energy</title>
   <meta name="description" content="Arctic Biowave Systems develops a radically simple, free-floating wave-energy system for ocean applications." />
-  <meta name="theme-color" content="#0A1C22">
+  <meta name="theme-color" content="#0B2536">
   <meta property="og:title" content="Arctic Biowave Systems – Simple Wave Energy" />
   <meta property="og:description" content="A free-floating system that turns wave motion into continuous, useful work — with only a few non-rigid parts." />
   <meta property="og:type" content="website" />
@@ -13,14 +13,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Ocean-inspired palette */
     :root{
-      --bg:#EDF3F7;        /* background */
-      --ink:#0A1C22;       /* primary text */
-      --muted:#5C6B74;     /* secondary text */
-      --teal:#A8CACC;      /* brand */
-      --line:#D9E6EE;      /* borders */
+      --bg:#ECF3F6;        /* foam background */
+      --ink:#0B2536;       /* deep slate text */
+      --muted:#5A7080;     /* secondary slate */
+      --sea:#0A1F2E;       /* deep navy (hero base) */
+      --teal:#2EA7A2;      /* sea-green accent */
+      --spray:#9FD7D3;     /* seafoam highlight */
+      --line:#D2E3EA;      /* soft border */
       --card:#FFFFFF;      /* surfaces */
-      --shadow:0 8px 24px rgba(10,28,34,.08);
+      --shadow:0 8px 24px rgba(11,37,54,.10);
       --radius:18px;
     }
     *{box-sizing:border-box}
@@ -31,26 +34,26 @@
     .container{max-width:1120px;margin:0 auto;padding:0 24px}
 
     /* Header */
-    header{position:sticky;top:0;z-index:20;background:rgba(237,243,247,.7);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
+    header{position:sticky;top:0;z-index:20;background:rgba(236,243,246,.7);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
     .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
     .brand{display:flex;align-items:center;gap:10px}
     .logo-img{height:36px;width:auto}
-    .brand b{font-weight:700;letter-spacing:.2px}
+    .sr-only{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
     .menu a{margin-left:18px;opacity:.9}
     .menu a:hover{opacity:1}
     .btn{display:inline-block;padding:12px 18px;border:1px solid var(--ink);border-radius:999px}
     .btn.primary{background:var(--ink);color:#fff}
 
     /* Hero */
-    .hero{position:relative;overflow:hidden;background:#0A1C22 url('assets/hero.jpg') center/cover no-repeat;}
-    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,28,34,.55),rgba(10,28,34,.65));}
+    .hero{position:relative;overflow:hidden;background:var(--sea) url('assets-hero.jpg') center/cover no-repeat;}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,31,46,.58),rgba(10,31,46,.70));}
     .hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:28px;padding:92px 0 72px;color:#fff}
     @media(min-width:960px){.hero .grid{grid-template-columns:1.05fr .95fr;align-items:center}}
     h1{font-size:clamp(36px,4.5vw,54px);line-height:1.1;letter-spacing:-.02em;margin:0}
     .lead{font-size:18px;color:#e6eef3;margin-top:14px;max-width:720px}
 
     /* Chips */
-    .chip{display:inline-block;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 10px;font-size:12px;color:#f2f7fa;background:rgba(255,255,255,.15);margin-right:8px;margin-top:12px}
+    .chip{display:inline-block;border:1px solid rgba(255,255,255,.32);border-radius:999px;padding:6px 10px;font-size:12px;color:#f2f7fa;background:rgba(255,255,255,.12);margin-right:8px;margin-top:12px}
 
     /* Sections / cards */
     .section{padding:64px 0}
@@ -62,13 +65,26 @@
     .cols-4{grid-template-columns:1fr}
     @media(min-width:960px){.cols-2{grid-template-columns:1fr 1fr}.cols-3{grid-template-columns:repeat(3,1fr)}.cols-4{grid-template-columns:repeat(4,1fr)}}
     .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);transition:transform .2s ease, box-shadow .2s ease}
-    .card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(10,28,34,.12)}
+    .card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(11,37,54,.14)}
+
+    /* Frosted hero card (Option 2) */
+    .hero .card{
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.22);
+      color:#fff;
+      backdrop-filter:blur(6px);
+    }
+    .hero .card h3{color:#fff}
+    .hero .card p{color:#E8F3F6}
 
     /* Footer */
     footer{border-top:1px solid var(--line);padding:28px 0 36px;color:var(--muted);text-align:center;font-size:14px}
 
     /* Motion respect */
-    @media (prefers-reduced-motion: reduce){ .card{transition:none} .hero::after{display:none} }
+    @media (prefers-reduced-motion: reduce){
+      .card{transition:none}
+      .hero::after{display:none}
+    }
     html{scroll-behavior:smooth}
   </style>
 </head>
@@ -77,8 +93,8 @@
   <header>
     <div class="container nav">
       <a class="brand" href="#top" aria-label="Arctic Biowave Systems">
-        <img class="logo-img" src="assets/logo.png" alt="Arctic Biowave Systems logo" loading="eager"/>
-        <b>Arctic Biowave Systems</b>
+        <img class="logo-img" src="assets-logo.png" alt="Arctic Biowave Systems logo" loading="eager"/>
+        <span class="sr-only">Arctic Biowave Systems</span>
       </a>
       <nav class="menu" aria-label="Primary">
         <a href="#how">How it works</a>
