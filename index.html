@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arctic Biowave Systems – Simple Wave Energy</title>
+  <meta name="description" content="Arctic Biowave Systems develops a radically simple, free-floating wave-energy system for ocean applications." />
+  <meta name="theme-color" content="#0A1C22">
+  <meta property="og:title" content="Arctic Biowave Systems – Simple Wave Energy" />
+  <meta property="og:description" content="A free-floating system that turns wave motion into continuous, useful work — with only a few non-rigid parts." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#EDF3F7;        /* background */
+      --ink:#0A1C22;       /* primary text */
+      --muted:#5C6B74;     /* secondary text */
+      --teal:#A8CACC;      /* brand */
+      --line:#D9E6EE;      /* borders */
+      --card:#FFFFFF;      /* surfaces */
+      --shadow:0 8px 24px rgba(10,28,34,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{color:var(--ink);text-decoration:none}
+    img{max-width:100%;height:auto}
+    .container{max-width:1120px;margin:0 auto;padding:0 24px}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:20;background:rgba(237,243,247,.7);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo-img{height:36px;width:auto}
+    .brand b{font-weight:700;letter-spacing:.2px}
+    .menu a{margin-left:18px;opacity:.9}
+    .menu a:hover{opacity:1}
+    .btn{display:inline-block;padding:12px 18px;border:1px solid var(--ink);border-radius:999px}
+    .btn.primary{background:var(--ink);color:#fff}
+
+    /* Hero */
+    .hero{position:relative;overflow:hidden;background:#0A1C22 url('assets/hero.jpg') center/cover no-repeat;}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,28,34,.55),rgba(10,28,34,.65));}
+    .hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:28px;padding:92px 0 72px;color:#fff}
+    @media(min-width:960px){.hero .grid{grid-template-columns:1.05fr .95fr;align-items:center}}
+    h1{font-size:clamp(36px,4.5vw,54px);line-height:1.1;letter-spacing:-.02em;margin:0}
+    .lead{font-size:18px;color:#e6eef3;margin-top:14px;max-width:720px}
+
+    /* Chips */
+    .chip{display:inline-block;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 10px;font-size:12px;color:#f2f7fa;background:rgba(255,255,255,.15);margin-right:8px;margin-top:12px}
+
+    /* Sections / cards */
+    .section{padding:64px 0}
+    .kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    h2{font-size:28px;margin:0 0 12px}
+    .grid{display:grid;gap:16px}
+    .cols-2{grid-template-columns:1fr}
+    .cols-3{grid-template-columns:1fr}
+    .cols-4{grid-template-columns:1fr}
+    @media(min-width:960px){.cols-2{grid-template-columns:1fr 1fr}.cols-3{grid-template-columns:repeat(3,1fr)}.cols-4{grid-template-columns:repeat(4,1fr)}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);transition:transform .2s ease, box-shadow .2s ease}
+    .card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(10,28,34,.12)}
+
+    /* Footer */
+    footer{border-top:1px solid var(--line);padding:28px 0 36px;color:var(--muted);text-align:center;font-size:14px}
+
+    /* Motion respect */
+    @media (prefers-reduced-motion: reduce){ .card{transition:none} .hero::after{display:none} }
+    html{scroll-behavior:smooth}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Arctic Biowave Systems">
+        <img class="logo-img" src="assets/logo.png" alt="Arctic Biowave Systems logo" loading="eager"/>
+        <b>Arctic Biowave Systems</b>
+      </a>
+      <nav class="menu" aria-label="Primary">
+        <a href="#how">How it works</a>
+        <a href="#applications">Applications</a>
+        <a href="#advantages">Advantages</a>
+        <a href="#about">About</a>
+        <a class="btn" href="mailto:kl@arcticbiowave.com">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="container grid">
+      <div>
+        <h1>Making wave power radically simple.</h1>
+        <p class="lead">A free-floating system that effectively converts the motion of waves using only three core parts. No gears. No oil. No complexity. Just physics and the ocean.</p>
+        <div>
+          <span class="chip">Storm-tolerant</span>
+          <span class="chip">Low maintenance</span>
+          <span class="chip">Modular</span>
+        </div>
+      </div>
+      <div class="card" aria-label="Illustration: three-part system">
+        <div class="kicker">How it works</div>
+        <h3 style="margin:0 0 8px">Simple and stormproof.</h3>
+        <p style="margin:0">Using only a few non-rigid parts, we remove the elements that break under rough sea conditions. A buoy follows the waves, a flexible energy-transfer element does the work, and a water anchor stabilizes the system. Together they convert motion into continuous, useful work for ocean applications.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Applications -->
+  <section class="section" id="applications">
+    <div class="container">
+      <div class="kicker">Applications</div>
+      <h2>One platform — many ocean solutions.</h2>
+      <div class="grid cols-4" style="margin-top:12px">
+        <div class="card"><h3>🐟 Aquaculture & Water Quality</h3><p>Keep offshore farms healthy and independent from diesel or grid power.</p></div>
+        <div class="card"><h3>💧 Desalination & Water Supply</h3><p>Provide sustainable intake and pre-pressure for coastal and island communities.</p></div>
+        <div class="card"><h3>🌊 Blue-Carbon Restoration</h3><p>Enable upwelling and water motion that restore marine ecosystems and store carbon naturally.</p></div>
+        <div class="card"><h3>⚡ Offshore & Hybrid Systems</h3><p>Integrate with floating platforms and microgrids as a clean, mechanical power source.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advantages -->
+  <section class="section" id="advantages">
+    <div class="container">
+      <div class="kicker">Advantages</div>
+      <h2>Simplicity that cuts cost, risk, and emissions.</h2>
+      <div class="grid cols-3" style="margin-top:12px">
+        <div class="card"><h3>Radically simple</h3><p>Three-part architecture — easy to build, deploy, and maintain anywhere.</p></div>
+        <div class="card"><h3>Storm-ready</h3><p>Flexible and compliant — designed to survive, not resist, the sea.</p></div>
+        <div class="card"><h3>Low cost & modular</h3><p>Scales from small coastal sites to industrial arrays.</p></div>
+        <div class="card"><h3>Zero emissions</h3><p>Harnesses local wave motion — no fuel, no noise, no pollution.</p></div>
+        <div class="card"><h3>Versatile platform</h3><p>Provides mechanical energy for a range of blue-economy uses.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="kicker">About</div>
+      <h2>From concept to ocean platform.</h2>
+      <div class="grid cols-2" style="margin-top:12px">
+        <div class="card">
+          <p>Arctic Biowave Systems is a Norwegian startup developing a patent-pending, free-floating wave-energy system designed for real-world marine operations.</p>
+          <ul>
+            <li>Patent pending (PCT route in progress)</li>
+            <li>TRL-3 validated; progressing to full-scale prototype</li>
+            <li>Based in Porsgrunn, Norway</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Contact</h3>
+          <p>We’re happy to discuss ocean applications, collaborations, or media.</p>
+          <p><a class="btn primary" href="mailto:kl@arcticbiowave.com">kl@arcticbiowave.com</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      © 2025 Arctic Biowave Systems AS · No cookies. No tracking. No personal data collected.
+    </div>
+  </footer>
+</body>
+</html>
