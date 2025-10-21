@@ -35,6 +35,10 @@
     a{color:inherit; text-decoration:none}
     img{max-width:100%; height:auto}
 
+    /* Global fixed background hero across the whole page */
+    body::before{content:""; position:fixed; inset:0; z-index:-2; background: var(--ocean) url('/hero-pump.jpg?v=5') center top / contain no-repeat;}
+    body::after{content:""; position:fixed; inset:0; z-index:-1; background: linear-gradient(180deg, rgba(10,28,34,0) 0%, rgba(10,28,34,.6) 40%, rgba(10,28,34,.95) 75%, #0A1C22 100%); pointer-events:none;}
+
     /* --- Header / Nav --- */
     header{position:fixed; top:0; left:0; right:0; z-index:9999; backdrop-filter:saturate(160%) blur(8px); background:linear-gradient(180deg, rgba(10,28,34,.82), rgba(10,28,34,.55)); border-bottom:1px solid var(--line)}
     .container{max-width:var(--maxw); margin:0 auto; padding:0 24px}
@@ -47,11 +51,11 @@
     .btn.primary{background:linear-gradient(180deg, var(--headline), #7fb9c0); color:#0A1C22; border:none; box-shadow:0 6px 20px rgba(168,202,204,.25)}
 
     /* --- Hero --- */
-    .hero{position:relative; min-height:100svh; overflow:hidden; display:grid; place-items:center; background: var(--ocean) url('/hero-pump.jpg?v=5') center bottom / cover no-repeat;}
+    .hero{position:relative; min-height:100svh; overflow:hidden; display:grid; place-items:center;}
     /* Make the image fill and anchor to bottom; JS will add a subtle parallax */
     
     
-    .hero-overlay{position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,28,34,.48) 0%, rgba(10,28,34,.32) 35%, rgba(10,28,34,.70) 100%)}
+    /* overlay handled by body::after */
     .hero-inner{position:relative; z-index:2; text-align:left; width:100%; max-width:var(--maxw); padding:0 24px}
 
     h1{font-size:clamp(36px,4.6vw,56px); line-height:1.08; margin:0; color:var(--headline)}
@@ -104,9 +108,6 @@
   </header>
 
   <section class="hero" id="top" aria-label="Hero with parallax background">
-    </div>
-    <div class="hero-overlay" aria-hidden="true"></div>
-
     <div class="hero-inner">
       <h1>Making wave power radically simple.</h1>
       <p class="lead">A free-floating system that effectively converts the motion of waves using only three core parts. No gears. No oil. No complexity. Just physics and the ocean.</p>
@@ -178,6 +179,25 @@
     </div>
   </footer>
 
-  
+  <script>
+    (function(){
+      const hero = document.querySelector('.hero');
+      const inner = document.querySelector('.hero-inner');
+      if(!hero || !inner) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      function onScroll(){
+        if(reduce.matches) return;
+        const rect = hero.getBoundingClientRect();
+        const h = Math.max(1, rect.height);
+        // progress from 0 (top of hero at viewport top) to 1 (hero fully scrolled past)
+        const p = Math.min(1, Math.max(0, (window.innerHeight - rect.top) / (window.innerHeight + h)));
+        const y = (p * -40); // up to -40px lift
+        inner.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
+      }
+      window.addEventListener('scroll', onScroll, {passive:true});
+      window.addEventListener('resize', onScroll);
+      onScroll();
+    })();
+  </script>
 </body>
 </html>
