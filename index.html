@@ -28,17 +28,17 @@
       --radius:20px;
       --maxw:1180px;
       --nav-h: clamp(60px, 8vw, 80px);
-      /* amount of image overscan so parallax never shows edges */
-      --hero-overscan-scale: 1.12;
+      --hero-overscan-scale: 1.12;          /* prevents edge peeking during parallax */
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     html{scroll-behavior:auto}
     body{
-      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       color:var(--body); background:var(--ocean); line-height:1.6;
-      /* ⬇️ removed global padding-top so the hero can bleed under the fixed header */
+      /* no global padding-top; hero bleeds under fixed header */
     }
     a{color:inherit; text-decoration:none}
     img{max-width:100%; height:auto}
@@ -59,52 +59,69 @@
     .btn{display:inline-block; padding:10px 16px; border:1px solid var(--line); border-radius:999px}
     .btn.primary{background:linear-gradient(180deg, var(--headline), #7fb9c0); color:#0A1C22; border:none; box-shadow:0 6px 20px rgba(168,202,204,.25)}
 
-    /* --- Hero --- */
+    /* --- Hero Stage (sticky background + two panels) --- */
     .hero{
       position:relative;
-      /* Full-height feel, but capped on huge screens */
-      min-height: clamp(560px, 100vh, 980px);
-      overflow:hidden;
-      display:grid; place-items:center;
+      height: 200vh;                         /* total scroll length of the hero sequence */
+      overflow:visible;
       isolation:isolate;
-      /* ⬇️ Let the image extend behind the fixed header without pushing content down */
-      margin-top: calc(-1 * var(--nav-h));
+      margin-top: calc(-1 * var(--nav-h));   /* bleed under fixed header */
       padding-top: var(--nav-h);
     }
-    /* Prefer device viewport (mobile browser chrome safe) */
-    @supports (min-height: 100dvh){
-      .hero{ min-height: clamp(560px, 100dvh, 980px); }
-    }
 
-    /* Background as an <img> so we can set focal point + transform */
-    .hero-img{
-      position:absolute; inset:0; z-index:0;
+    /* Sticky background layer that lingers while content scrolls */
+    .hero-bglayer{
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;                      /* hide parallax edges */
+      z-index: 0;
+    }
+    .hero-bglayer > picture,
+    .hero-bglayer > picture > .hero-img{
+      position:absolute; inset:0;
       width:100%; height:100%;
+    }
+    .hero-img{
       object-fit: cover;
-      /* Adjust focal so the top isn’t “cut off”. Tweak as needed. */
-      object-position: 50% 24%;
-      /* Start slightly zoomed to provide overscan for parallax */
+      object-position: 50% 24%;              /* focal point; tweak as needed */
       transform: translate3d(0,0,0) scale(var(--hero-overscan-scale));
       transform-origin:center;
       will-change: transform;
     }
 
-    /* Overlay only on the hero (not whole page) */
+    /* Soft overlay across the whole hero for readability */
     .hero::after{
       content:""; position:absolute; inset:0; z-index:1;
       background: linear-gradient(180deg,
-        rgba(10,28,34,0) 0%,
-        rgba(10,28,34,.55) 40%,
-        rgba(10,28,34,.95) 75%,
+        rgba(10,28,34,0.10) 0%,
+        rgba(10,28,34,0.55) 40%,
+        rgba(10,28,34,0.95) 75%,
         #0A1C22 100%);
       pointer-events:none;
     }
 
-    /* Foreground content sits above bg and overlay */
+    /* Panel 1: headline block fills first viewport */
     .hero-inner{
-      position:relative; z-index:2; text-align:left; width:100%; max-width:var(--maxw); padding:0 24px;
+      position: relative; z-index: 2;
+      display: grid;
+      align-content: center;                 /* vertical centering in first 100vh */
+      min-height: 100vh;
+      width:100%; max-width:var(--maxw);
+      padding: 0 24px;
       transform: translate3d(0,0,0);
       will-change: transform;
+    }
+
+    /* Panel 2: sticky copy that scrolls over the hero */
+    .hero-panel{
+      position: sticky;
+      top: calc(var(--nav-h) + 20px);        /* pins just below header */
+      z-index: 3;                             /* above overlay and image */
+      display: grid;
+      align-content: start;
+      padding: 0 24px;
+      margin-top: 24vh;                      /* when panel 2 first appears */
     }
 
     h1{font-size:clamp(36px,4.6vw,56px); line-height:1.08; margin:0; color:var(--headline)}
@@ -124,7 +141,11 @@
     .cols-2{grid-template-columns:1fr}
     .cols-3{grid-template-columns:1fr}
     .cols-4{grid-template-columns:1fr}
-    @media(min-width:960px){.cols-2{grid-template-columns:1fr 1fr}.cols-3{grid-template-columns:repeat(3,1fr)}.cols-4{grid-template-columns:repeat(4,1fr)}}
+    @media(min-width:960px){
+      .cols-2{grid-template-columns:1fr 1fr}
+      .cols-3{grid-template-columns:repeat(3,1fr)}
+      .cols-4{grid-template-columns:repeat(4,1fr)}
+    }
     .card{background:var(--cardbg); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:0 8px 24px rgba(0,0,0,.18)}
     .card h3{margin:0 0 6px; color:var(--headline)}
     .card p{color:var(--body)}
@@ -159,17 +180,20 @@
   </header>
 
   <section class="hero" id="top" aria-label="Hero with parallax background">
-    <!-- Background as an image so we can control focal point -->
-    <picture aria-hidden="true">
-      <img
-        class="hero-img"
-        src="/hero-pump.jpg?v=5"
-        alt=""
-        loading="eager"
-        decoding="async"
-      />
-    </picture>
+    <!-- Sticky background layer (lingers while content scrolls) -->
+    <div class="hero-bglayer" aria-hidden="true">
+      <picture>
+        <img
+          class="hero-img"
+          src="/hero-pump.jpg?v=5"
+          alt=""
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
+    </div>
 
+    <!-- Panel 1: headline block -->
     <div class="hero-inner">
       <h1>Making wave power radically simple.</h1>
       <p class="lead">A free-floating system that effectively converts the motion of waves using only three core parts. No gears. No oil. No complexity. Just physics and the ocean.</p>
@@ -184,6 +208,15 @@
         <p>Using only a few non-rigid parts, we remove the elements that break under rough sea conditions. A buoy follows the waves, a flexible energy-transfer element does the work, and a water anchor stabilizes the system — converting motion into continuous, useful work for ocean applications.</p>
       </div>
     </div>
+
+    <!-- Panel 2: sticky copy that scrolls over the hero -->
+    <aside class="hero-panel">
+      <div class="hero-card">
+        <div class="kicker">The gist</div>
+        <h3>Mechanics, not complexity.</h3>
+        <p>Our platform turns wave motion directly into useful work — pumping, circulation, intake pre-pressure — with minimal parts and no gearboxes or oil. Built to ride out storms and scale modularly.</p>
+      </div>
+    </aside>
   </section>
 
   <section class="section" id="applications">
@@ -251,28 +284,33 @@
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
       let ticking = false;
 
+      function overscanScale(){
+        const v = getComputedStyle(document.documentElement).getPropertyValue('--hero-overscan-scale');
+        return parseFloat(v) || 1;
+      }
+
       function applyParallax(){
         ticking = false;
 
         if(reduce.matches){
           inner.style.transform = 'translate3d(0,0,0)';
-          bg.style.transform = `translate3d(0,0,0) scale(${getComputedStyle(document.documentElement).getPropertyValue('--hero-overscan-scale') || 1})`;
+          bg.style.transform = `translate3d(0,0,0) scale(${overscanScale()})`;
           return;
         }
 
         const rect = hero.getBoundingClientRect();
         const vh = window.innerHeight;
 
-        /* progress centered on the hero: -1 at one screen above, +1 one screen below */
+        /* center-based normalization: -1 (one screen above) to +1 (one screen below) */
         const centerOffset = (rect.top + rect.height/2) - (vh/2);
         const norm = Math.max(-1, Math.min(1, centerOffset / vh));
 
-        /* background moves more than foreground for depth; values tuned to feel natural */
-        const bgY = norm * -80;    // px, drift opposite scroll a bit more
-        const fgY = norm *  28;    // px, subtle counter-lift
+        /* background moves more than foreground for depth */
+        const bgY = norm * -80;    // px: drift opposite scroll
+        const fgY = norm *  28;    // px: gentle counter-lift
 
         inner.style.transform = `translate3d(0, ${fgY.toFixed(1)}px, 0)`;
-        bg.style.transform = `translate3d(0, ${bgY.toFixed(1)}px, 0) scale(${getComputedStyle(document.documentElement).getPropertyValue('--hero-overscan-scale') || 1})`;
+        bg.style.transform = `translate3d(0, ${bgY.toFixed(1)}px, 0) scale(${overscanScale()})`;
       }
 
       function onScroll(){
