@@ -26,6 +26,7 @@
       --radius:20px;
       --maxw:1180px;
       --hero-h:96vh;
+      --nav-h:64px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -35,11 +36,11 @@
     img{max-width:100%; height:auto}
 
     /* Sticky glassy header */
-    header{position:sticky; top:0; z-index:40; backdrop-filter:saturate(160%) blur(8px); background:linear-gradient(180deg, rgba(10,28,34,.82), rgba(10,28,34,.55)); border-bottom:1px solid var(--line)}
+    header{position:fixed; top:0; left:0; right:0; z-index:60; backdrop-filter:saturate(160%) blur(8px); background:linear-gradient(180deg, rgba(10,28,34,.82), rgba(10,28,34,.55)); border-bottom:1px solid var(--line)}
     .container{max-width:var(--maxw); margin:0 auto; padding:0 24px}
-    .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; height:64px}
+    .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; height:var(--nav-h)}
     .brand{display:flex; align-items:center; gap:10px; font-weight:700}
-    .logo-img{height:48px; width:auto}
+    .logo-img{height:36px; width:auto}
     .menu a{margin-left:18px; opacity:.92}
     .menu a:hover{opacity:1}
     .btn{display:inline-block; padding:10px 16px; border:1px solid var(--line); border-radius:999px}
@@ -79,16 +80,16 @@
     @media (prefers-reduced-motion: reduce){ .hero-bg{transform:none !important} }
   </style>
 </head>
-<body>
+<body style="padding-top: var(--nav-h)">
   <!-- Header -->
   <header>
     <div class="container nav">
       <a class="brand" href="#top" aria-label="Arctic Biowave Systems">
         <!-- Place your logo in the project root as 'logo.png' to avoid path separators in Windows -->
         <img class="logo-img" src="logo.png" alt="Arctic Biowave Systems logo" loading="eager"/>
-        <span class="sr-only"></span>
+        <span class="sr-only">Arctic Biowave Systems</span>
       </a>
-      <nav class="menu" aria-label="Primary">
+      <nav class="menu" aria-label="Primary" data-sticky="true">
         <a href="#how">How it works</a>
         <a href="#applications">Applications</a>
         <a href="#advantages">Advantages</a>
@@ -103,9 +104,10 @@
     <div class="hero-bg" id="hero-bg">
       <!-- IMPORTANT: Put hero image in the project root as 'hero-pump.jpg' or 'hero-pump.webp' (no folders, no '/') -->
       <picture>
-        <source srcset="hero-pump.webp" type="image/webp" />
-        <img src="hero-pump.jpg" alt="Arctic Biowave wave‑powered pump at sea" loading="eager" fetchpriority="high" />
+        <source srcset="hero-pump.webp?v=1" type="image/webp" />
+        <img src="hero-pump.jpg?v=1" alt="Arctic Biowave wave‑powered pump at sea" loading="eager" fetchpriority="high" onerror="this.style.display='none';document.getElementById('hero-fallback').style.display='block'"/>
       </picture>
+      <div id="hero-fallback" style="display:none; position:absolute; inset:0; background:radial-gradient(120% 100% at 50% 0%, rgba(143,211,255,.25), rgba(10,28,34,.6) 60%, rgba(10,28,34,.9) 100%)"></div>
     </div>
     <div class="hero-overlay" aria-hidden="true"></div>
 
@@ -126,7 +128,7 @@
   </section>
 
   <!-- Applications -->
-  <section class="section" id="applications">
+  <section class="section" id="applications" style="scroll-margin-top: var(--nav-h)">
     <div class="container">
       <div class="kicker">Applications</div>
       <h2>One platform — many ocean solutions.</h2>
@@ -140,7 +142,7 @@
   </section>
 
   <!-- Advantages -->
-  <section class="section" id="advantages">
+  <section class="section" id="advantages" style="scroll-margin-top: var(--nav-h)">
     <div class="container">
       <div class="kicker">Advantages</div>
       <h2>Simplicity that cuts cost, risk, and emissions.</h2>
@@ -155,7 +157,7 @@
   </section>
 
   <!-- About -->
-  <section class="section" id="about">
+  <section class="section" id="about" style="scroll-margin-top: var(--nav-h)">
     <div class="container">
       <div class="kicker">About</div>
       <h2>From concept to ocean platform.</h2>
