@@ -1,3 +1,6 @@
+Here’s your full page with the fixes applied (shorter hero on desktop, preserved aspect ratio, and controllable focal point). You can tweak `object-position` on `.hero-img` to aim the visible area.
+
+```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -43,9 +46,6 @@
     a{color:inherit; text-decoration:none}
     img{max-width:100%; height:auto}
 
-    /* ✂️ REMOVED the page-wide fixed background and overlay
-       body::before and body::after were causing the image to start behind the header */
-
     /* --- Header / Nav --- */
     header{
       position:fixed; top:0; left:0; right:0; z-index:9999;
@@ -65,16 +65,23 @@
     /* --- Hero --- */
     .hero{
       position:relative;
-      min-height:100svh; /* full viewport height */
+      /* Cap height so it isn't a huge billboard on large monitors */
+      min-height: clamp(520px, 80vh, 820px);
       overflow:hidden;
       display:grid; place-items:center;
       isolation:isolate; /* keeps overlay/background stacking clean */
     }
+    /* Prefer device viewport when available (avoids browser UI interference) */
+    @supports (height: 100dvh){
+      .hero{ min-height: clamp(520px, 80dvh, 820px); }
+    }
 
-    /* Full-bleed background that STARTS under the header */
-    .hero-bg{
+    /* Background as an <img> so we can use object-fit/object-position */
+    .hero-img{
       position:absolute; inset:0; z-index:0;
-      background: var(--ocean) url('/hero-pump.jpg?v=5') center top / cover no-repeat;
+      width:100%; height:100%;
+      object-fit: cover;           /* fill without distortion */
+      object-position: 50% 38%;    /* tweak to “aim the camera” */
       transform: translate3d(0,0,0);
       will-change: transform;
     }
@@ -127,7 +134,7 @@
     #how{scroll-margin-top: calc(var(--nav-h) + 12px)}
 
     @media (prefers-reduced-motion: reduce){
-      .hero-bg, .hero-inner{transform:none !important}
+      .hero-img, .hero-inner{transform:none !important}
     }
   </style>
 </head>
@@ -149,8 +156,16 @@
   </header>
 
   <section class="hero" id="top" aria-label="Hero with parallax background">
-    <!-- 🆕 Section-scoped background -->
-    <div class="hero-bg" aria-hidden="true"></div>
+    <!-- Background as an image so we can control focal point -->
+    <picture aria-hidden="true">
+      <img
+        class="hero-img"
+        src="/hero-pump.jpg?v=5"
+        alt=""
+        loading="eager"
+        decoding="async"
+      />
+    </picture>
 
     <div class="hero-inner">
       <h1>Making wave power radically simple.</h1>
@@ -227,7 +242,7 @@
     (function(){
       const hero = document.querySelector('.hero');
       const inner = document.querySelector('.hero-inner');
-      const bg = document.querySelector('.hero-bg');
+      const bg = document.querySelector('.hero-img'); // target the <img> now
       if(!hero || !inner || !bg) return;
 
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -247,9 +262,9 @@
         // progress from 0 (top of hero at viewport top) to 1 (hero fully scrolled past)
         const p = Math.min(1, Math.max(0, (vh - rect.top) / (vh + h)));
 
-        // Foreground floats up slightly, background drifts down a bit (parallax)
-        const innerY = p * -24;  // up to -24px lift
-        const bgY    = p * 60;   // up to +60px drift
+        // Foreground floats up slightly, background drifts subtly (gentler than before)
+        const innerY = p * -20;  // up to -20px lift
+        const bgY    = p * 24;   // up to +24px drift
 
         inner.style.transform = `translate3d(0, ${innerY.toFixed(1)}px, 0)`;
         bg.style.transform = `translate3d(0, ${bgY.toFixed(1)}px, 0)`;
@@ -268,3 +283,4 @@
   </script>
 </body>
 </html>
+```
